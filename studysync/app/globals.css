@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Backgrounds */
+    --bg-base: #080B14;
+    --bg-surface: #0D1120;
+    --bg-elevated: #141826;
+    --bg-overlay: #1A2030;
+    
+    /* Aurora Accents */
+    --aurora-violet: #7C3AED;
+    --aurora-teal: #0EA5E9;
+    --aurora-mint: #10B981;
+    --aurora-rose: #F43F5E;
+    --aurora-amber: #F59E0B;
+    
+    /* Glow versions (for animations) */
+    --glow-violet: #7C3AED40;
+    --glow-teal: #0EA5E940;
+    --glow-mint: #10B98130;
+    
+    /* Text */
+    --text-primary: #EEF2FF;
+    --text-secondary: #94A3B8;
+    --text-muted: #475569;
+    
+    /* Borders */
+    --border-subtle: #1E2535;
+    --border-default: #252D40;
+    --border-strong: #334155;
+    --border-accent: #7C3AED55;
+    
+    /* Shadows */
+    --shadow-card: 0 2px 8px rgba(0,0,0,0.5);
+    --shadow-room: 0 8px 40px rgba(124,58,237,0.15), 0 0 0 1px rgba(124,58,237,0.1);
+    --shadow-glow-v: 0 0 30px rgba(124,58,237,0.3);
+    --shadow-glow-t: 0 0 30px rgba(14,165,233,0.25);
+    
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 22px;
+    --radius-full: 9999px;
+    
+    /* Timer specific */
+    --timer-ring-bg: #1A2030;
+    --timer-ring-fill: #7C3AED;
+    --timer-ring-break: #10B981;
+    --timer-text: #EEF2FF;
+
+    /* shadcn/ui compatibility */
+    --background: 216 24% 7%;
+    --foreground: 240 100% 97%;
+    --card: 220 20% 10%;
+    --card-foreground: 240 100% 97%;
+    --popover: 220 20% 12%;
+    --popover-foreground: 240 100% 97%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 240 100% 97%;
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 240 100% 97%;
+    --muted: 215 25% 27%;
+    --muted-foreground: 214 20% 58%;
+    --accent: 220 20% 16%;
+    --accent-foreground: 240 100% 97%;
+    --destructive: 350 89% 60%;
+    --destructive-foreground: 240 100% 97%;
+    --border: 217 25% 21%;
+    --input: 217 25% 21%;
+    --ring: 262 83% 58%;
+    --radius: 0.625rem;
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-[var(--bg-base)] text-[var(--text-primary)];
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  
+  code, pre {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer utilities {
+  /* Aurora Background */
+  .aurora-bg {
+    background: 
+      radial-gradient(ellipse 80% 60% at 20% 30%, #7C3AED18 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 70%, #0EA5E912 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 50% 0%, #10B98108 0%, transparent 50%),
+      #080B14;
+    background-size: 200% 200%;
+    animation: aurora-shift 20s ease infinite;
+  }
+  
+  /* Text sizes */
+  .text-xs { font-size: 11px; letter-spacing: 0.06em; }
+  .text-sm { font-size: 13px; }
+  .text-base { font-size: 15px; }
+  .text-lg { font-size: 18px; }
+  .text-xl { font-size: 22px; }
+  .text-2xl { font-size: 28px; font-weight: 700; }
+  .text-3xl { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; }
+  .text-hero { font-size: 56px; font-weight: 900; letter-spacing: -0.03em; }
+  
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--bg-surface);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 3px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--aurora-violet);
+  }
+  
+  /* Focus visible */
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--aurora-violet);
+    outline-offset: 2px;
+  }
+  
+  /* Glassmorphism */
+  .glass {
+    background: rgba(13, 17, 32, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+  }
+  
+  /* Room card aurora border */
+  .room-card-border {
+    position: relative;
+    border-left: 4px solid var(--aurora-violet);
+  }
+  
+  .room-card-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 1px;
+    background: linear-gradient(135deg, var(--border-accent), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .room-card-border:hover::before {
+    opacity: 1;
+  }
+  
+  /* Pulse animation */
+  .pulse-glow {
+    animation: pulse-glow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+  
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--aurora-violet), var(--aurora-teal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Gradient button */
+  .gradient-button {
+    background: linear-gradient(135deg, var(--aurora-violet), var(--aurora-teal));
+    transition: all 0.3s;
+  }
+  
+  .gradient-button:hover {
+    filter: brightness(1.2);
+    box-shadow: var(--shadow-glow-v);
+  }
+  
+  .gradient-button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Remove autofill background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-surface) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+}
