@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
   Home, 
@@ -15,6 +15,8 @@ import {
   Flame
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { logout, getCurrentUser } from '@/lib/auth';
+import { toast } from 'sonner';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -31,6 +33,14 @@ const bottomNav = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const currentUser = getCurrentUser();
+
+  const handleLogout = () => {
+    logout();
+    toast.success('Logged out successfully');
+    router.push('/login');
+  };
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-[var(--bg-surface)] border-r border-[var(--border-default)] flex flex-col z-30">
@@ -94,7 +104,9 @@ export function Sidebar() {
             <Flame className="w-4 h-4 text-[var(--aurora-amber)]" />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-[var(--text-primary)]">14</span>
+            <span className="text-2xl font-bold text-[var(--text-primary)]">
+              {currentUser?.currentStreak || 0}
+            </span>
             <span className="text-xs text-[var(--text-muted)]">days</span>
           </div>
           <div className="mt-2 h-1.5 bg-[var(--bg-overlay)] rounded-full overflow-hidden">
@@ -133,10 +145,8 @@ export function Sidebar() {
 
         {/* Logout button */}
         <button
+          onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--aurora-rose)] hover:bg-[var(--bg-overlay)] transition-all"
-          onClick={() => {
-            // TODO: Implement logout
-          }}
         >
           <LogOut className="w-5 h-5" />
           <span>Logout</span>

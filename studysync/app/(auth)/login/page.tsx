@@ -42,6 +42,232 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Floating context cards */}
+      <div className="absolute inset-0 pointer-events-none hidden md:block">
+        <motion.div
+          className="absolute top-20 left-10 glass px-4 py-3 rounded-lg"
+          animate={{
+            y: [0, -10, 0],
+            x: [0, 5, 0],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        >
+          <div className="text-sm text-[var(--text-secondary)]">
+            🍅 25:00 · Focus Mode · 3 people studying
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="absolute top-40 right-20 glass px-4 py-3 rounded-lg"
+          animate={{
+            y: [0, 10, 0],
+            x: [0, -5, 0],
+          }}
+          transition={{
+            duration: 35,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 1,
+          }}
+        >
+          <div className="text-sm text-[var(--text-secondary)]">
+            📚 Mathematics · 8 online now
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="absolute bottom-32 left-1/4 glass px-4 py-3 rounded-lg"
+          animate={{
+            y: [0, -15, 0],
+            x: [0, 8, 0],
+          }}
+          transition={{
+            duration: 40,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 2,
+          }}
+        >
+          <div className="text-sm text-[var(--text-secondary)]">
+            🔥 Day 14 streak · Keep going!
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Main auth card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md relative z-10"
+      >
+        {/* Logo and tagline */}
+        <div className="text-center mb-6 md:mb-8">
+          <motion.div
+            className="inline-flex items-center gap-3 mb-3"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+          >
+            <div className="relative">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[var(--aurora-violet)] to-[var(--aurora-teal)] p-0.5">
+                <div className="w-full h-full rounded-full bg-[var(--bg-base)] flex items-center justify-center">
+                  <span className="text-xl md:text-2xl">📚</span>
+                </div>
+              </div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 md:w-4 md:h-4 rounded-full bg-[var(--aurora-mint)] pulse-glow" />
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold gradient-text">StudySync</h1>
+          </motion.div>
+          <p className="text-[var(--text-secondary)] text-sm md:text-base">
+            Study together. Focus deeper.
+          </p>
+        </div>
+
+        {/* Demo credentials banner */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-4 p-4 bg-gradient-to-r from-[var(--aurora-violet)]/10 to-[var(--aurora-teal)]/10 border border-[var(--aurora-violet)]/30 rounded-xl"
+        >
+          <div className="flex items-start gap-3">
+            <div className="text-2xl">🎯</div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1">
+                Demo Login Credentials
+              </h3>
+              <div className="text-xs text-[var(--text-secondary)] space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[var(--text-muted)]">Email:</span>
+                  <code className="px-2 py-0.5 bg-[var(--bg-overlay)] rounded text-[var(--aurora-teal)]">
+                    {demoCredentials.email}
+                  </code>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[var(--text-muted)]">Password:</span>
+                  <code className="px-2 py-0.5 bg-[var(--bg-overlay)] rounded text-[var(--aurora-teal)]">
+                    {demoCredentials.password}
+                  </code>
+                </div>
+              </div>
+              <button
+                onClick={handleDemoLogin}
+                className="mt-2 text-xs text-[var(--aurora-violet)] hover:text-[var(--aurora-teal)] transition-colors font-medium"
+              >
+                → Click to auto-fill
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Form card */}
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl md:rounded-2xl p-6 md:p-8 shadow-lg">
+          <div className="mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-1">
+              Welcome back
+            </h2>
+            <p className="text-[var(--text-secondary)] text-sm">
+              Sign in to continue your study journey
+            </p>
+          </div>
+
+          {/* Error message */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-[var(--aurora-rose)]/10 border border-[var(--aurora-rose)]/30 rounded-lg flex items-center gap-2 text-sm text-[var(--aurora-rose)]"
+            >
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{error}</span>
+            </motion.div>
+          )}
+
+          {/* Email/Password form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-[var(--bg-overlay)] border border-[var(--border-default)] rounded-lg pl-11 pr-4 py-2.5 md:py-3 text-sm md:text-base text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--aurora-violet)] focus:border-transparent transition-all"
+                  placeholder="your@email.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-[var(--bg-overlay)] border border-[var(--border-default)] rounded-lg pl-11 pr-4 py-2.5 md:py-3 text-sm md:text-base text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--aurora-violet)] focus:border-transparent transition-all"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded border-[var(--border-default)] bg-[var(--bg-overlay)] text-[var(--aurora-violet)] focus:ring-2 focus:ring-[var(--aurora-violet)] focus:ring-offset-0"
+                />
+                <span className="text-[var(--text-secondary)]">Remember me</span>
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full gradient-button text-white font-semibold rounded-lg px-4 py-2.5 md:py-3 text-sm md:text-base flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                'Sign in'
+              )}
+            </button>
+          </form>
+
+          {/* Sign up link */}
+          <div className="mt-6 text-center text-sm">
+            <span className="text-[var(--text-secondary)]">
+              Don't have an account?{' '}
+            </span>
+            <Link
+              href="/register"
+              className="text-[var(--aurora-violet)] hover:text-[var(--aurora-teal)] font-medium transition-colors"
+            >
+              Sign up
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Floating context cards */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
           className="absolute top-20 left-10 glass px-4 py-3 rounded-lg"
