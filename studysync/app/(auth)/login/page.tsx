@@ -2,22 +2,41 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Loader2 } from 'lucide-react';
+import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react';
+import { demoLogin, getDemoCredentials } from '@/lib/auth';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const demoCredentials = getDemoCredentials();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
     
-    // TODO: Implement login logic
-    setTimeout(() => {
+    // Demo login
+    const result = demoLogin(email, password);
+    
+    if (result.success) {
+      toast.success(`Welcome back, ${result.user?.name}!`);
+      router.push('/dashboard');
+    } else {
+      setError(result.error || 'Login failed');
       setIsLoading(false);
-    }, 1000);
+    }
+  };
+
+  const handleDemoLogin = () => {
+    setEmail(demoCredentials.email);
+    setPassword(demoCredentials.password);
   };
 
   return (
