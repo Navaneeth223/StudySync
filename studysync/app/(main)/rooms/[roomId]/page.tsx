@@ -182,7 +182,7 @@ export default function RoomPage() {
 
       {/* Main content - 3 panel layout */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Panel - Participants */}
+        {/* Left Panel - Participants (Desktop only) */}
         <aside className="w-80 bg-[var(--bg-surface)] border-r border-[var(--border-default)] hidden lg:block">
           <ParticipantPanel
             participants={mockParticipants}
@@ -194,7 +194,7 @@ export default function RoomPage() {
         <main className="flex-1 flex flex-col bg-[var(--bg-base)]">
           {/* Tab navigation */}
           <div className="border-b border-[var(--border-default)] bg-[var(--bg-surface)]">
-            <div className="flex items-center gap-1 px-6">
+            <div className="flex items-center gap-1 px-4 md:px-6 overflow-x-auto">
               {[
                 { id: 'timer', label: '🍅 Timer' },
                 { id: 'whiteboard', label: '✏️ Whiteboard' },
@@ -203,7 +203,7 @@ export default function RoomPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as TabType)}
-                  className={`px-4 py-3 font-medium text-sm transition-all relative ${
+                  className={`px-3 md:px-4 py-2 md:py-3 font-medium text-xs md:text-sm transition-all relative whitespace-nowrap ${
                     activeTab === tab.id
                       ? 'text-[var(--text-primary)]'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -236,11 +236,11 @@ export default function RoomPage() {
             )}
 
             {activeTab === 'whiteboard' && (
-              <div className="h-full flex items-center justify-center text-[var(--text-secondary)]">
+              <div className="h-full flex items-center justify-center text-[var(--text-secondary)] p-4">
                 <div className="text-center">
-                  <div className="text-6xl mb-4">✏️</div>
-                  <p className="text-lg font-medium mb-2">Whiteboard</p>
-                  <p className="text-sm text-[var(--text-muted)]">
+                  <div className="text-4xl md:text-6xl mb-4">✏️</div>
+                  <p className="text-base md:text-lg font-medium mb-2">Whiteboard</p>
+                  <p className="text-xs md:text-sm text-[var(--text-muted)]">
                     Excalidraw integration coming soon
                   </p>
                 </div>
@@ -248,11 +248,11 @@ export default function RoomPage() {
             )}
 
             {activeTab === 'notes' && (
-              <div className="h-full flex items-center justify-center text-[var(--text-secondary)]">
+              <div className="h-full flex items-center justify-center text-[var(--text-secondary)] p-4">
                 <div className="text-center">
-                  <div className="text-6xl mb-4">📝</div>
-                  <p className="text-lg font-medium mb-2">Shared Notes</p>
-                  <p className="text-sm text-[var(--text-muted)]">
+                  <div className="text-4xl md:text-6xl mb-4">📝</div>
+                  <p className="text-base md:text-lg font-medium mb-2">Shared Notes</p>
+                  <p className="text-xs md:text-sm text-[var(--text-muted)]">
                     Tiptap collaborative editor coming soon
                   </p>
                 </div>
@@ -261,7 +261,7 @@ export default function RoomPage() {
           </div>
         </main>
 
-        {/* Right Panel - Chat */}
+        {/* Right Panel - Chat (Desktop only) */}
         <aside className="w-96 border-l border-[var(--border-default)] hidden lg:block">
           <ChatPanel
             messages={mockMessages}
@@ -271,6 +271,96 @@ export default function RoomPage() {
           />
         </aside>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="lg:hidden border-t border-[var(--border-default)] bg-[var(--bg-surface)] safe-bottom">
+        <div className="grid grid-cols-4 gap-1 p-2">
+          <button
+            onClick={() => setShowMobilePanel(showMobilePanel === 'participants' ? null : 'participants')}
+            className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+              showMobilePanel === 'participants'
+                ? 'bg-[var(--bg-overlay)] text-[var(--aurora-violet)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-overlay)]'
+            }`}
+          >
+            <Users className="w-5 h-5" />
+            <span className="text-xs font-medium">People</span>
+            <span className="text-xs text-[var(--text-muted)]">{mockParticipants.length}</span>
+          </button>
+
+          <button
+            onClick={() => setShowMobilePanel(null)}
+            className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+              !showMobilePanel
+                ? 'bg-[var(--bg-overlay)] text-[var(--aurora-violet)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-overlay)]'
+            }`}
+          >
+            <Clock className="w-5 h-5" />
+            <span className="text-xs font-medium">Timer</span>
+          </button>
+
+          <button
+            onClick={() => setShowMobilePanel(showMobilePanel === 'chat' ? null : 'chat')}
+            className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors relative ${
+              showMobilePanel === 'chat'
+                ? 'bg-[var(--bg-overlay)] text-[var(--aurora-violet)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-overlay)]'
+            }`}
+          >
+            <div className="relative">
+              <MessageSquare className="w-5 h-5" />
+              {mockMessages.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-[var(--aurora-rose)] rounded-full pulse-glow" />
+              )}
+            </div>
+            <span className="text-xs font-medium">Chat</span>
+          </button>
+
+          <button
+            onClick={() => setIsFocusLock(true)}
+            className="flex flex-col items-center gap-1 p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-overlay)] transition-colors"
+          >
+            <Maximize2 className="w-5 h-5" />
+            <span className="text-xs font-medium">Focus</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Panels (Slide up) */}
+      <AnimatePresence>
+        {showMobilePanel === 'participants' && (
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="lg:hidden fixed inset-0 top-14 z-40 bg-[var(--bg-surface)]"
+          >
+            <ParticipantPanel
+              participants={mockParticipants}
+              currentUserId="current"
+            />
+          </motion.div>
+        )}
+
+        {showMobilePanel === 'chat' && (
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="lg:hidden fixed inset-0 top-14 z-40 bg-[var(--bg-surface)]"
+          >
+            <ChatPanel
+              messages={mockMessages}
+              currentUserId="current"
+              onSendMessage={(content) => console.log('Send:', content)}
+              isFocusTime={false}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Focus Lock Overlay (modal) */}
       {isFocusLock && (
