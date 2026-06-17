@@ -94,6 +94,7 @@ export default function RoomPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>('timer');
   const [isFocusLock, setIsFocusLock] = useState(false);
+  const [showMobilePanel, setShowMobilePanel] = useState<'participants' | 'chat' | null>(null);
 
   const roomId = params.roomId as string;
   const topicColor = getTopicColor(mockRoom.topic);
@@ -112,20 +113,20 @@ export default function RoomPage() {
   return (
     <div className="h-screen flex flex-col">
       {/* Room Header */}
-      <header className="h-16 bg-[var(--bg-surface)] border-b border-[var(--border-default)] px-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <header className="h-14 md:h-16 bg-[var(--bg-surface)] border-b border-[var(--border-default)] px-4 md:px-6 flex items-center justify-between">
+        <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
           <Link
             href="/rooms"
-            className="p-2 rounded-lg hover:bg-[var(--bg-overlay)] transition-colors"
+            className="p-2 rounded-lg hover:bg-[var(--bg-overlay)] transition-colors flex-shrink-0"
           >
-            <ArrowLeft className="w-5 h-5 text-[var(--text-secondary)]" />
+            <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 text-[var(--text-secondary)]" />
           </Link>
 
-          <div>
-            <h1 className="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2">
-              {mockRoom.name}
+          <div className="flex-1 min-w-0">
+            <h1 className="text-sm md:text-lg font-bold text-[var(--text-primary)] flex items-center gap-2 truncate">
+              <span className="truncate">{mockRoom.name}</span>
             </h1>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span
                 className="text-xs px-2 py-0.5 rounded-full font-medium"
                 style={{
@@ -137,16 +138,16 @@ export default function RoomPage() {
               </span>
               <div className="flex items-center gap-1 text-xs text-[var(--aurora-mint)]">
                 <div className="w-1.5 h-1.5 bg-[var(--aurora-mint)] rounded-full pulse-glow" />
-                LIVE · {mockParticipants.length} studying
+                LIVE · {mockParticipants.length}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
           <button
             onClick={handleShareRoom}
-            className="p-2 rounded-lg hover:bg-[var(--bg-overlay)] transition-colors"
+            className="p-2 rounded-lg hover:bg-[var(--bg-overlay)] transition-colors hidden md:block"
             title="Share room"
           >
             <Share2 className="w-5 h-5 text-[var(--text-secondary)]" />
@@ -154,7 +155,7 @@ export default function RoomPage() {
 
           {isRoomCreator && (
             <button
-              className="p-2 rounded-lg hover:bg-[var(--bg-overlay)] transition-colors"
+              className="p-2 rounded-lg hover:bg-[var(--bg-overlay)] transition-colors hidden md:block"
               title="Room settings"
             >
               <Settings className="w-5 h-5 text-[var(--text-secondary)]" />
@@ -163,7 +164,7 @@ export default function RoomPage() {
 
           <button
             onClick={() => setIsFocusLock(true)}
-            className="p-2 rounded-lg hover:bg-[var(--bg-overlay)] transition-colors"
+            className="p-2 rounded-lg hover:bg-[var(--bg-overlay)] transition-colors hidden md:block"
             title="Focus Lock"
           >
             <Maximize2 className="w-5 h-5 text-[var(--text-secondary)]" />
@@ -171,10 +172,10 @@ export default function RoomPage() {
 
           <button
             onClick={handleLeaveRoom}
-            className="px-4 py-2 rounded-lg font-medium text-[var(--aurora-rose)] hover:bg-[var(--aurora-rose)]/10 transition-colors flex items-center gap-2"
+            className="px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-medium text-xs md:text-sm text-[var(--aurora-rose)] hover:bg-[var(--aurora-rose)]/10 transition-colors flex items-center gap-1 md:gap-2"
           >
-            <LogOut className="w-4 h-4" />
-            Leave
+            <LogOut className="w-3 h-3 md:w-4 md:h-4" />
+            <span className="hidden sm:inline">Leave</span>
           </button>
         </div>
       </header>
