@@ -142,31 +142,32 @@ export default function RoomsPage() {
   const studyingCount = mockRooms.reduce((sum, room) => sum + room.currentParticipants, 0);
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
+      <div className="mb-6 md:mb-8">
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-3 md:gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">
+            <h1 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-1 md:mb-2">
               Study Rooms
             </h1>
-            <p className="text-[var(--text-secondary)]">
+            <p className="text-sm md:text-base text-[var(--text-secondary)]">
               <span className="text-[var(--aurora-mint)] font-semibold">{studyingCount}</span> students studying right now
             </p>
           </div>
-          <button className="gradient-button px-5 py-2.5 rounded-lg font-medium text-white flex items-center gap-2">
-            <Plus className="w-5 h-5" />
-            Create Room
+          <button className="gradient-button px-4 md:px-5 py-2 md:py-2.5 rounded-lg font-medium text-white flex items-center gap-2 text-sm md:text-base">
+            <Plus className="w-4 md:w-5 h-4 md:h-5" />
+            <span className="hidden sm:inline">Create Room</span>
+            <span className="sm:hidden">Create</span>
           </button>
         </div>
 
         {/* Filters */}
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
           {/* Topic filters */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
             <button
               onClick={() => setSelectedTopic('all')}
-              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
+              className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg font-medium text-xs md:text-sm whitespace-nowrap transition-all ${
                 selectedTopic === 'all'
                   ? 'bg-gradient-to-r from-[var(--aurora-violet)] to-[var(--aurora-teal)] text-white'
                   : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-overlay)] border border-[var(--border-default)]'
@@ -178,7 +179,7 @@ export default function RoomsPage() {
               <button
                 key={topic.value}
                 onClick={() => setSelectedTopic(topic.value)}
-                className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
+                className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg font-medium text-xs md:text-sm whitespace-nowrap transition-all ${
                   selectedTopic === topic.value
                     ? 'text-white border'
                     : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-overlay)] border border-[var(--border-default)]'
@@ -192,39 +193,41 @@ export default function RoomsPage() {
                     : undefined
                 }
               >
-                {topic.emoji} {topic.label}
+                <span className="hidden sm:inline">{topic.emoji} {topic.label}</span>
+                <span className="sm:hidden">{topic.emoji}</span>
               </button>
             ))}
           </div>
 
           {/* Search and sort */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <div className="relative flex-1 min-w-[280px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+          <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+            <div className="relative flex-1 min-w-full sm:min-w-[280px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 md:w-5 h-4 md:h-5 text-[var(--text-muted)]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search rooms..."
-                className="w-full bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg pl-11 pr-4 py-2.5 text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--aurora-violet)] focus:border-transparent transition-all"
+                className="w-full bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg pl-10 md:pl-11 pr-4 py-2 md:py-2.5 text-sm md:text-base text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--aurora-violet)] focus:border-transparent transition-all"
               />
             </div>
 
-            <label className="flex items-center gap-2 px-4 py-2.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg cursor-pointer hover:bg-[var(--bg-overlay)] transition-colors">
+            <label className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg cursor-pointer hover:bg-[var(--bg-overlay)] transition-colors">
               <input
                 type="checkbox"
                 checked={showLiveOnly}
                 onChange={(e) => setShowLiveOnly(e.target.checked)}
-                className="w-4 h-4 rounded border-[var(--border-default)] bg-[var(--bg-overlay)] text-[var(--aurora-violet)] focus:ring-2 focus:ring-[var(--aurora-violet)] focus:ring-offset-0"
+                className="w-3.5 md:w-4 h-3.5 md:h-4 rounded border-[var(--border-default)] bg-[var(--bg-overlay)] text-[var(--aurora-violet)] focus:ring-2 focus:ring-[var(--aurora-violet)] focus:ring-offset-0"
               />
-              <div className="flex items-center gap-1.5 text-sm font-medium text-[var(--text-secondary)]">
+              <div className="flex items-center gap-1.5 text-xs md:text-sm font-medium text-[var(--text-secondary)]">
                 <div className="w-2 h-2 bg-[var(--aurora-mint)] rounded-full pulse-glow" />
-                Live Now
+                <span className="hidden sm:inline">Live Now</span>
+                <span className="sm:hidden">Live</span>
               </div>
             </label>
 
-            <button className="p-2.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg hover:bg-[var(--bg-overlay)] transition-colors">
-              <SlidersHorizontal className="w-5 h-5 text-[var(--text-secondary)]" />
+            <button className="p-2 md:p-2.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg hover:bg-[var(--bg-overlay)] transition-colors">
+              <SlidersHorizontal className="w-4 md:w-5 h-4 md:h-5 text-[var(--text-secondary)]" />
             </button>
           </div>
         </div>
@@ -242,7 +245,7 @@ export default function RoomsPage() {
               },
             },
           }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5"
         >
           {filteredRooms.map((room) => (
             <motion.div
@@ -257,16 +260,16 @@ export default function RoomsPage() {
           ))}
         </motion.div>
       ) : (
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
+        <div className="text-center py-12 md:py-16">
+          <div className="text-5xl md:text-6xl mb-3 md:mb-4">🔍</div>
+          <h3 className="text-lg md:text-xl font-semibold text-[var(--text-primary)] mb-2">
             No rooms found
           </h3>
-          <p className="text-[var(--text-secondary)] mb-6">
+          <p className="text-sm md:text-base text-[var(--text-secondary)] mb-4 md:mb-6">
             Try adjusting your filters or create a new room
           </p>
-          <button className="gradient-button px-6 py-3 rounded-lg font-medium text-white inline-flex items-center gap-2">
-            <Plus className="w-5 h-5" />
+          <button className="gradient-button px-5 md:px-6 py-2.5 md:py-3 rounded-lg font-medium text-white inline-flex items-center gap-2 text-sm md:text-base">
+            <Plus className="w-4 md:w-5 h-4 md:h-5" />
             Create Room
           </button>
         </div>

@@ -14,6 +14,13 @@ export const metadata: Metadata = {
   title: 'StudySync - Study Together. Focus Deeper.',
   description: 'Real-time collaborative study platform for students. Join topic-based study rooms, stay focused with shared Pomodoro timers, and hold each other accountable.',
   keywords: ['study', 'pomodoro', 'collaborative', 'focus', 'students', 'learning'],
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    viewportFit: 'cover', // For iOS safe area support
+  },
 };
 
 export default function RootLayout({

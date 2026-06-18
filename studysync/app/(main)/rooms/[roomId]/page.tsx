@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Share2, Settings, LogOut, Maximize2 } from 'lucide-react';
+import { ArrowLeft, Share2, Settings, LogOut, Maximize2, Users, Clock, MessageSquare } from 'lucide-react';
 import { TimerPanel } from '@/components/room/TimerPanel';
 import { ParticipantPanel } from '@/components/room/ParticipantPanel';
 import { ChatPanel } from '@/components/room/ChatPanel';
